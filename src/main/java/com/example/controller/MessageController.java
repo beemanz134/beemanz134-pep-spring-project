@@ -5,6 +5,7 @@ import com.example.service.AccountService;
 import com.example.service.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,18 +36,22 @@ public class MessageController {
             return ResponseEntity.badRequest().build(); // 400 if message text is invalid
         }
         if (m.getPostedBy() == null || !accountService.existsById(m.getPostedBy())) {
-            return ResponseEntity.badRequest().build(); // 400 if postedBy is invalid
+            return ResponseEntity.badRequest().build();
         }
         if (m.getTimePostedEpoch() == null) {
-            m.setTimePostedEpoch(System.currentTimeMillis() / 1000); // Set to current epoch time in seconds
+            m.setTimePostedEpoch(System.currentTimeMillis() / 1000);
         }
         Message createdMessage = messageService.addMessage(m);
-        return ResponseEntity.ok(createdMessage); // Return the created message with 200 OK
+        return ResponseEntity.ok(createdMessage);
     }
 
     @DeleteMapping("messages/{messageId}")
-    public String deleteMessage() {
-        return null;
+    public ResponseEntity<Integer> deleteMessage(@PathVariable("messageId") int messageId) {
+        if (!messageService.existsById(messageId)) {
+            return ResponseEntity.ok().build();
+        }
+        messageService.deleteMessage(messageId);
+        return ResponseEntity.ok(1);
     }
 
     @PatchMapping("messages/{messageId}")
