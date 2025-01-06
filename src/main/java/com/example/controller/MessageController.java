@@ -55,7 +55,11 @@ public class MessageController {
     }
 
     @PatchMapping("messages/{messageId}")
-    public String updateMessage() {
-        return null;
+    public ResponseEntity<Integer> updateMessage(@PathVariable("messageId") int messageId, @RequestBody Message m) {
+        if(!messageService.existsById(messageId) || m.getMessageText() == null || m.getMessageText().length() > 255 || m.getMessageText().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        Message updateMessage = messageService.updateMessage(messageId, m);
+        return ResponseEntity.ok(1);
     }
 }

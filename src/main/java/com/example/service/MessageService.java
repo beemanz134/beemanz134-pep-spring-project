@@ -37,7 +37,17 @@ public class MessageService {
         return messageRepository.findAll();
     }
 
-    public String getMessageById(int messageId) {
+    public Message getMessageById(int messageId) {
+        Message message = messageRepository.findById(messageId).orElse(null);
+        return message;
+    }
+
+    public Message updateMessage(int messageId, Message m) {
+        Message message = messageRepository.findById(messageId).orElse(null);
+        if (message != null) {
+            message.setMessageText(m.getMessageText());
+            return messageRepository.save(message);
+        }
         return null;
     }
 
