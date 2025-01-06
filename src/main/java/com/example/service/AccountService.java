@@ -22,4 +22,8 @@ public class AccountService {
         return accountRepository.findByUsername(username);
 
     }
+
+    public Account addAccount(Account account) {
+        return accountRepository.save(account);
+    }
 }

@@ -39,7 +39,15 @@ public class AccountController {
     }
 
     @PostMapping("register")
-    public String register() {
-        return null;
+    public ResponseEntity<Account> register(@RequestBody Account registerRequest) {
+        if (registerRequest.getUsername() == null || registerRequest.getPassword() == null) {
+            return ResponseEntity.badRequest().build(); // 400 Bad Request
+        }
+        Optional<Account> accountOptional = accountService.findByUsername(registerRequest.getUsername());
+        if (!accountOptional.isPresent()) {
+            Account account = accountService.addAccount(registerRequest);
+            return ResponseEntity.ok(account); // 200 OK
+        }
+        return ResponseEntity.status(409).build();
     }
 }
