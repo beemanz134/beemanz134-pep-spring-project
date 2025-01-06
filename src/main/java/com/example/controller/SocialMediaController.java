@@ -50,9 +50,12 @@ public class SocialMediaController {
     }
 
     @GetMapping("messages")
-    public String getAllMessagesAvailable() {
-
-        return null;
+    public ResponseEntity<List<Message>> getAllMessagesAvailable() {
+        List<Message> messages = messageService.getAllMessages();
+        if(messages.isEmpty()) {
+            return ResponseEntity.ok(messages);
+        }
+        return ResponseEntity.ok(messages);
     }
 
     @GetMapping("messages/{messageId}")

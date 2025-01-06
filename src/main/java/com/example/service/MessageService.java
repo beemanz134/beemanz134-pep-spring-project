@@ -33,8 +33,8 @@ public class MessageService {
         return messageRepository.findByPostedBy(accountId);
     }
 
-    public String getAllMessages() {
-        return null;
+    public List<Message> getAllMessages() {
+        return messageRepository.findAll();
     }
 
     public String getMessageById(int messageId) {
