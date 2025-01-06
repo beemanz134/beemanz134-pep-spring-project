@@ -44,7 +44,7 @@ public class SocialMediaController {
     public ResponseEntity<List<Message>> getAllMessages(@PathVariable("accountId") Integer accountId) {
         List<Message> messages = messageService.getAllMessagesBy(accountId);
         if (messages.isEmpty()) {
-            return ResponseEntity.noContent().build(); // 204 if empty
+            return ResponseEntity.ok(messages);
         }
         return ResponseEntity.ok(messages);
     }
